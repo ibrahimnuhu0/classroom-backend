@@ -1,11 +1,23 @@
 import express, { Request, Response } from 'express';
+import cors from 'cors'
 
-// Create Express application
+
+import subjectsRouter from "./routes/subjects"
+
 const app = express();
 const PORT = 8000;
 
-// Middleware
-app.use(express.json()); // JSON body parser middleware
+if (!process.env.FRONTEND_URL) throw new Error ('FRONTEND_URL is not in .env file')
+
+app.use(cors({
+  origin: process.env.FRONTEND_URL,
+  methods: ['GET', 'POST', 'PUT', 'DELETE'],
+  credentials: true
+}))
+
+app.use(express.json());
+
+app.use('/api/subjects', subjectsRouter)
 
 // Root GET route
 app.get('/', (req: Request, res: Response) => {
@@ -15,18 +27,9 @@ app.get('/', (req: Request, res: Response) => {
   });
 });
 
-// Optional: Add a health check route
-app.get('/health', (req: Request, res: Response) => {
-  res.status(200).json({ status: 'healthy' });
-});
 
-// Start server
 app.listen(PORT, () => {
-  console.log(`✅ Server is running on http://localhost:${PORT}`);
-  console.log(`📝 Available routes:`);
-  console.log(`   GET / - Returns welcome message`);
-  console.log(`   GET /health - Health check endpoint`);
+  console.log(`Server is running on http://localhost:${PORT}`);
 });
 
-// Export the app for testing if needed
 export default app;
