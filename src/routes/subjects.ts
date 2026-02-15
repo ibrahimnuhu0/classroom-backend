@@ -8,10 +8,10 @@ const router = express.Router();
 // Get all subject with optiinal search and pagination
 
 router.get("/", async (req, res) => {
-  const {search, department, Page = 1, limit = 10} = req.query;
+  const {search, department, page = 1, limit = 10} = req.query;
 
-  const currentPage = Math.max(1, +Page)
-  const limitPerPage = Math.max(1, +limit)
+  const currentPage = Math.max(1, Number(page))
+  const limitPerPage = Math.min(100, Math.max(1, Number(limit)))
 
   const offset = (currentPage -1) * limitPerPage;
 
@@ -26,8 +26,8 @@ router.get("/", async (req, res) => {
   if (search)  {
     filterCondition.push(
       or(
-          ilike(subjects.name, `%${search}`),
-          ilike(subjects.code, `%${search}`)
+           ilike(subjects.name, `%${search}%`),
+           ilike(subjects.code, `%${search}%`)
       )
     )
   }
