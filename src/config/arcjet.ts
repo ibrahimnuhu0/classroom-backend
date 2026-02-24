@@ -1,4 +1,4 @@
-import arcjet, {shield, detectBot, slidingWindow} from "@arcjet/node";
+import arcjet, { shield, detectBot } from "@arcjet/node";
 
 if (!process.env.ARCJET_KEY && process.env.NODE_ENV !== "test") {
   throw new Error(
@@ -11,16 +11,11 @@ const aj = arcjet({
   rules: [
     shield({ mode: "LIVE" }),
     detectBot({
-      mode: "LIVE", 
+      mode: "LIVE",
       allow: [
         "CATEGORY:SEARCH_ENGINE",
         "CATEGORY:PREVIEW",
       ],
-    }),
-    slidingWindow({
-      mode: "LIVE",
-      interval: "2s", // Refill every 2 seconds
-      max: 5, // Allow 5 requests per interval
     }),
   ],
 });

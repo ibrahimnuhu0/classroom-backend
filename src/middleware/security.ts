@@ -9,7 +9,6 @@ const securityMiddleware = async (
   res: Response,
   next: NextFunction
 ) => {
-  // If NODE_ENV is TEST, skip security middleware
   if (process.env.NODE_ENV === "test") {
     return next();
   }
@@ -45,12 +44,22 @@ const securityMiddleware = async (
       })
     );
 
+    const remoteAddress = req.socket.remoteAddress ?? req.ip;
+
+    if (!remoteAddress) {
+      console.warn("Rejecting request with no identifiable IP address");
+      return res.status(403).json({
+        error: "Forbidden",
+        message: "Unable to identify request origin",
+      });
+    }
+
     const arcjetRequest: ArcjetNodeRequest = {
       headers: req.headers,
       method: req.method,
       url: req.originalUrl ?? req.url,
       socket: {
-        remoteAddress: req.socket.remoteAddress ?? req.ip ?? "0.0.0.0",
+        remoteAddress,
       },
     };
 
@@ -88,3 +97,4 @@ const securityMiddleware = async (
 };
 
 export default securityMiddleware;
+
