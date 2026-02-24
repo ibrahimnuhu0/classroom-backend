@@ -49,7 +49,6 @@ if (department) {
         .where(whereClause)
 
     const totalCount =  countResult [0] ?.count ?? 0;
-    
     const subjectsList =  await db.select({...getTableColumns(subjects),
        department: {...getTableColumns(departments)}
   }).from(subjects).leftJoin(departments, eq(subjects.departmentId, departments.id))
