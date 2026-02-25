@@ -4,8 +4,8 @@
   "main": "dist/index.js",
   "scripts": {
     "dev": "tsx watch src/index.ts",
-    "build": "tsc",
-    "start": "node dist/server.ts",
+    "build": "npx tsc",
+    "start": "node dist/index.js",
     "test": "echo \"Error: no test specified\" && exit 1",
     "db:generate": "drizzle-kit generate",
     "db:migrate": "drizzle-kit migrate"
@@ -24,12 +24,12 @@
     "cors": "^2.8.6",
     "dotenv": "^17.2.4",
     "drizzle-orm": "^0.45.1",
-    "express": "^5.2.1"
+    "express": "^5.2.1",
+    "typescript": "^5.9.3"
   },
   "devDependencies": {
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
-    "drizzle-kit": "^0.31.9",
-    "typescript": "^5.9.3"
+    "drizzle-kit": "^0.31.9"
   }
 }
