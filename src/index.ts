@@ -1,3 +1,4 @@
+import { classes } from './db/schema/app';
 import { index } from 'drizzle-orm/pg-core';
 import AgentAPI from 'apminsight';
 AgentAPI.config()
@@ -10,6 +11,8 @@ import subjectsRouter from "./routes/subjects.js"
 import securityMiddleware from './middleware/security.js';
 import {toNodeHandler} from  "better-auth/node";
 import { auth } from './lib/auth.js';
+import usersRouter from './routes/users.js';
+import classesRouter from './routes/classes.js';
 
 const app = express();
 const PORT = 8000;
@@ -31,6 +34,9 @@ app.use(securityMiddleware)
 app.all('/api/auth/*splat', toNodeHandler(auth));
 
 app.use('/api/subjects', subjectsRouter)
+app.use('/api/users', usersRouter);
+app.use('./api/classes', classesRouter)
+
 
 // Root GET route
 app.get('/', (req: Request, res: Response) => {
